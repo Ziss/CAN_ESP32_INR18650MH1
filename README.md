@@ -15,7 +15,7 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
   - max capacity
 * Send the metrics to mobile via Bluetooth (UART)
 
-![Metrics on mobile](images/MetricsOnMobile.png)
+![Metrics on mobile](images/MetricsOnMobile.jpeg)
 
 ## Prerequisites
 
@@ -31,6 +31,7 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
 * Install Arduino IDE: https://www.arduino.cc/en/software
 * Install ESP32 board in Arduino IDE: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
 * Install Sandeep Mistry's Arduino-CAN Library: https://github.com/sandeepmistry/arduino-CAN#installation
+* Install a Terminal app on android: https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=en
 
 ## Hardware
 
@@ -65,6 +66,11 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
 3. Wire everything
 4. Switch on
 5. The battery should deliver some current on the power plug
+6. Install [Serial Bluetooth Terminal](https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=en)
+7. Connect your Bluetooth to "ESP32_Battery"
+8. Open the app
+9. Click on Connect
+10. Read the metrics from the battery pack
 
 ## Sources
 
