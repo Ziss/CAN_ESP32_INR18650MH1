@@ -1,4 +1,4 @@
-# Arduino - ESP32 - Manage INR18650MH1 by CAN Bus
+# Arduino - ESP32 - Manage INR18650MH1 by CAN Bus and push metrics over Bluetooth
 
 ## Overview
 
