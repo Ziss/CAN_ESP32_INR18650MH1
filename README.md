@@ -25,9 +25,9 @@ Read key metrics
 
 ### Software
 
-Install Arduino IDE: https://www.arduino.cc/en/software
-Install ESP32 board in Arduino IDE: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
-Install Sandeep Mistry's Arduino-CAN Library: https://github.com/sandeepmistry/arduino-CAN#installation
+* Install Arduino IDE: https://www.arduino.cc/en/software
+* Install ESP32 board in Arduino IDE: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
+* Install Sandeep Mistry's Arduino-CAN Library: https://github.com/sandeepmistry/arduino-CAN#installation
 
 ## Hardware
 
