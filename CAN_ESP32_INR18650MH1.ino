@@ -6,6 +6,11 @@
 
 
 #include <CAN.h>
+#include "BluetoothSerial.h"
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
 
 char* can_func[]={\
   "NMT  ",\
@@ -43,6 +48,8 @@ typedef struct
 
 Battery_val batt; //Battery values
 
+BluetoothSerial SerialBT;
+
 /******************************************************************************************/
 
 
@@ -50,9 +57,10 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600);
   while (!Serial);
-  delay(1000);
 
-  Serial.println("CAN Sender");
+  SerialBT.begin("ESP32_Battery"); //Bluetooth device name
+  yield();
+  Serial.println("The device started, now you can pair it with bluetooth!");
 
   // start the CAN bus at 100 kbps
   if (!CAN.begin(100E3)) {
@@ -72,7 +80,8 @@ void loop() {
 
   //testReadCANSerialRaw(); // Switch ON, OFF and ask battery charge. Dump raw data to Serial
   //testReadCANSerialCANopen(); // Switch ON, OFF and ask battery charge. Parse CANopen to Serial
-  testReadCANSerialBatt(); // Switch ON and fetch battery info, print to Serial
+  //testReadCANSerialBatt(); // Switch ON and fetch battery info, print to Serial
+  switchON_SendToBluetooth(); // Switch ON and fetch battery info, send to BT UART
 }
 
 /***************************************************************************************************************/
@@ -121,6 +130,18 @@ void testReadCANSerialBatt() { // Switch ON and fetch battery info, print to Ser
   
   readCANSerialBatt(3000);
 }
+
+void switchON_SendToBluetooth() { // Switch ON and fetch battery info, send to Bluetooth
+  switchON();
+  readCANBluetoothBatt(3000);
+  getIndex(0x200001); //voltage in mV
+  getIndex(0x201001); //charge in % 
+  getIndex(0x201002); // maxcapacity in mAh 
+  getIndex(0x200003); // current in mA
+  
+  readCANBluetoothBatt(3000);
+}
+
 
 void switchON() {
   CAN.beginPacket(0x630); //SDO-Receive to 0X30 (Battery ID)
@@ -260,6 +281,11 @@ void readCANSerialBatt(unsigned int millisec) { //millisec: time to spend waitin
 }
 
 
+void readCANBluetoothBatt(unsigned int millisec) { //millisec: time to spend waiting for CAN messages
+  readCANBatt(millisec, &batt);
+  bluetoothBatt(&batt);
+}
+
 void serial_Batt(Battery_val* b)
 {
     Serial.print("Charge: ");
@@ -275,6 +301,34 @@ void serial_Batt(Battery_val* b)
     Serial.print((int16_t)b->maxcapacity);
     Serial.println(" mAh");
     Serial.println();
+}
+
+void sendStringBT(char* str){
+  uint8_t i = 0;
+  while (str[i] != 0) SerialBT.write((uint8_t)str[i++]);
+}
+
+void sendIntBT(int32_t num){
+  char str [11];
+  itoa(num, str, 10);
+  uint8_t i = 0;
+  while (str[i] != 0) SerialBT.write((uint8_t)str[i++]);
+}
+
+void bluetoothBatt(Battery_val* b) {
+    Serial.println("Data sent via Bluetooth UART");
+    sendStringBT("Charge: ");
+    sendIntBT(b->charge);
+    sendStringBT(" %\n");
+    sendStringBT("Voltage: ");
+    sendIntBT(b->voltage);
+    sendStringBT(" mV\n");
+    sendStringBT("Current: ");
+    sendIntBT(b->current);
+    sendStringBT(" mA\n");
+    sendStringBT("Max Capacity: ");
+    sendIntBT(b->maxcapacity);
+    sendStringBT(" mAh\n\n");
 }
 
 void readCANBatt(unsigned int millisec, Battery_val* b) { //millisec: time to spend waiting for CAN messages
