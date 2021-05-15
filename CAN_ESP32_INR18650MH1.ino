@@ -19,35 +19,64 @@ void setup() {
   if (!CAN.begin(100E3)) {
     yield();
     Serial.println("Starting CAN failed!");
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(100);
     while (1);
-
-  Serial.println("CAN Ready");
-  //yield();
   }
+  Serial.println("CAN Ready");
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
   // send packet: id is 11 bits, packet can contain up to 8 bytes of data
   Serial.print("Sending packet ON ... ");
+  switchON();
+  Serial.println("done");
+  readCANSerial(3000);
 
+  Serial.print("Sending packet BATT ... ");
+  requestBattCharge();
+  Serial.println("done");
+  readCANSerial(3000);
+  
+  Serial.print("Sending packet OFF ... ");
+  switchOFF();
+  Serial.println("done");
+  readCANSerial(3000);
+
+}
+
+/***************************************************************************************************************/
+
+void switchON() {
+  CAN.beginPacket(0x630); //SDO-Receive to 0X30 (Battery ID)
+  CAN.write(0x2F); //Download expedited transfer with payload of 1 byte
+  CAN.write(0x00); //Index 0x2200 (little endian)
+  CAN.write(0x22); //Index 0x2200 (little endian)
+  CAN.write(0x01); //SubIndex 0x01
+  CAN.write(0x01); //Set to 1
+  CAN.write(0x00);
+  CAN.write(0x00);
+  CAN.write(0x00);
+  CAN.endPacket();
+}
+
+void switchOFF() {
   CAN.beginPacket(0x630); //
   CAN.write(0x2F);
   CAN.write(0x00);
   CAN.write(0x22);
   CAN.write(0x01);
-  CAN.write(0x01);
+  CAN.write(0x00);
   CAN.write(0x00);
   CAN.write(0x00);
   CAN.write(0x00);
   CAN.endPacket();
+}
 
-  Serial.println("done");
-  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-
-  readCAN(3000);
-
-  Serial.print("Sending packet BATT ... ");
-
+void requestBattCharge() {
   CAN.beginPacket(0x630); //
   CAN.write(0x40);
   CAN.write(0x10);
@@ -58,51 +87,18 @@ void loop() {
   CAN.write(0x00);
   CAN.write(0x00);
   CAN.endPacket();
-
-  Serial.println("done");
-  
-  readCAN(3000);
-  
-  Serial.print("Sending packet OFF ... ");
-
-  CAN.beginPacket(0x630); //
-  CAN.write(0x2F);
-  CAN.write(0x00);
-  CAN.write(0x22);
-  CAN.write(0x01);
-  CAN.write(0x00);
-  CAN.write(0x00);
-  CAN.write(0x00);
-  CAN.write(0x00);
-  CAN.endPacket();
-
-  Serial.println("done");
-  //digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  //delay(1000);                       // wait
-  digitalWrite(LED_BUILTIN, LOW); 
-  
-  readCAN(3000);
-
 }
 
-void readCAN(unsigned int millisec) {
+void readCANSerial(unsigned int millisec) { //millisec: time to spend waiting for CAN messages
 
     unsigned long previousMillis = millis();
     while(millis()- previousMillis < millisec) {
       int packetSize = CAN.parsePacket();
       if (packetSize) {
         // received a packet
+        digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on
         Serial.print("Received ");
-    
-        if (CAN.packetExtended()) {
-          Serial.print("extended ");
-        }
-    
-        if (CAN.packetRtr()) {
-          // Remote transmission request, packet contains no data
-          Serial.print("RTR ");
-        }
-    
+     
         Serial.print("packet with id 0x");
         Serial.print(CAN.packetId(), HEX);
     
@@ -122,6 +118,7 @@ void readCAN(unsigned int millisec) {
         }
     
         Serial.println();
+        digitalWrite(LED_BUILTIN, LOW); 
       }
   }
 }

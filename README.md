@@ -20,11 +20,14 @@ Read key metrics
 
 * [Understand CAN](https://www.youtube.com/watch?v=FqLDpHsxvf8)
 * [Understand CANopen](https://www.youtube.com/watch?v=DlbkWryzJqg)
-* [Understand ESP32](https://randomnerdtutorials.com/getting-started-with-esp32/)
+* [Understand ESP32](https://randomnerdtutorials.com/getting-started-with-esp32/) ESP32 is simple, most common issue: the USB cable you are using is not good
+* [Have an idea of what we try to achieve](https://www.youtube.com/watch?v=E87EcLeqIX0)
 
 ### Software
 
-Install Sandeep Mistry Arduino-CAN Library: https://github.com/sandeepmistry/arduino-CAN#installation
+Install Arduino IDE: https://www.arduino.cc/en/software
+Install ESP32 board in Arduino IDE: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
+Install Sandeep Mistry's Arduino-CAN Library: https://github.com/sandeepmistry/arduino-CAN#installation
 
 ## Hardware
 
@@ -32,7 +35,7 @@ Install Sandeep Mistry Arduino-CAN Library: https://github.com/sandeepmistry/ard
 * [VP230 / SN65HVD230](https://www.openimpulse.com/blog/products-page/product-category/sn65hvd230-can-bus-transceiver-module) CAN Bus Transceiver. **IMPORTANT!** Some of the cheap modules have a faulty resistor: [Swap the resistor for a 150 Ohm](https://github.com/nopnop2002/Arduino-STM32-CAN#troubleshooting)
 * Some wires
 * A switch
-* A charged INR18650MH1 battery pack 
+* A **charged** INR18650MH1 battery pack 
 
 ### Wiring
 
@@ -54,18 +57,18 @@ Install Sandeep Mistry Arduino-CAN Library: https://github.com/sandeepmistry/ard
 
 ## Installation
 
-### Using the Arduino IDE Library Manager
-
-1. Choose `Sketch` -> `Include Library` -> `Manage Libraries...`
-2. Type `CAN` into the search box.
-3. Click the row to select the library.
-4. Click the `Install` button to install the library.
+1. Open the file in Arduino IDE (Make sure it is ready to target ESP32. Did you manage to run the Blink program?)
+2. Flash the ESP32 with the software
+3. Wire everything
+4. Switch on
+5. The battery should deliver some current on the power plug
 
 ## Sources
-https://github.com/jonans/jump_bms
-https://github.com/alex3dbros/LGH1ScooterPackPower
-https://github.com/sandeepmistry/arduino-CAN
-https://github.com/nopnop2002/Arduino-STM32-CAN
+
+* https://github.com/jonans/jump_bms
+* https://github.com/alex3dbros/LGH1ScooterPackPower
+* https://github.com/sandeepmistry/arduino-CAN
+* https://github.com/nopnop2002/Arduino-STM32-CAN
 
 ## License
 
