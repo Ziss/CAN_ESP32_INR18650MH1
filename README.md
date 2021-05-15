@@ -7,12 +7,12 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
 
 ## Features
 
-Enable power
-Read key metrics
-* charge
-* voltage
-* current
-* max capacity
+* Enable power
+* Read key metrics
+** charge
+** voltage
+** current
+** max capacity
 
 ## Prerequisites
 
