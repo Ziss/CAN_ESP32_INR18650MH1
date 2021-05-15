@@ -7,12 +7,15 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
 
 ## Features
 
-* Enable power
-* Read key metrics
-** charge
-** voltage
-** current
-** max capacity
+* Enable power up to 30A
+* Read key metrics from the battery:
+  - charge
+  - voltage
+  - current
+  - max capacity
+* Send the metrics to mobile via Bluetooth (UART)
+
+![Metrics on mobile](images/MetricsOnMobile.png)
 
 ## Prerequisites
 
