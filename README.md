@@ -79,6 +79,15 @@ ESP32 was chosen for its onboard SJA1000 able to communicate to a simple CAN tra
 * https://github.com/sandeepmistry/arduino-CAN
 * https://github.com/nopnop2002/Arduino-STM32-CAN
 
+## Roadmap of features
+
+* Nice app with direct bluetooth connection
+* Alert to the app in case of low battery
+* Bluetooth Low Energy
+* Ability to change the battery ID (0x30) to something else to be able to address several of them on the same CAN BUS
+* OLED screen displaying the metrics. I've got the code for STM32, just need to port it
+* Feel free to add features you think are missing...
+
 ## License
 
 This library is [licensed](LICENSE) under the [MIT Licence](http://en.wikipedia.org/wiki/MIT_License).
